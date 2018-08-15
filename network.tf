@@ -10,6 +10,26 @@ resource "google_compute_subnetwork" "kubernetes" {
   region        = "${var.region}"
 }
 
+resource "google_compute_address" "controllers" {
+  count = "${var.number_of_controller}"
+  name = "controller-${count.index}"
+#  name = "kubernetes-${var.region}"
+  subnetwork = "${google_compute_subnetwork.kubernetes.self_link}"
+  address_type = "INTERNAL"
+  region = "${var.region}"
+  address = "10.240.0.2${count.index}"
+}
+
+resource "google_compute_address" "workers" {
+  count = "${var.number_of_worker}"
+  name = "worker-${count.index}"
+#  name = "kubernetes-${var.region}"
+  subnetwork = "${google_compute_subnetwork.kubernetes.self_link}"
+  address_type = "INTERNAL"
+  region = "${var.region}"
+  address = "10.240.0.3${count.index}"
+}
+
 resource "google_compute_firewall" "kubernetes-allow-icmp" {
   name          = "kubernetes-allow-icmp"
   network       = "${google_compute_network.kubernetes.name}"
@@ -113,9 +133,9 @@ resource "google_compute_address" "kubernetes" {
 resource "google_compute_target_pool" "kubernetes" {
   name = "kubernetes-pool"
   instances = [
-    "${var.region}-${var.zones[0]}/controller-00",
-    "${var.region}-${var.zones[0]}/controller-01",
-    "${var.region}-${var.zones[0]}/controller-02",
+    "${var.region}-${var.zones[0]}/controller-0",
+    "${var.region}-${var.zones[0]}/controller-1",
+    "${var.region}-${var.zones[0]}/controller-2",
   ]
   health_checks = [
 #    "${google_compute_health_check.kubernetes-health-check-with-ssl.name}",

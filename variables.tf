@@ -32,16 +32,16 @@ variable "zones" {
   default = ["a", "b", "c"]
 }
 
-variable "number_of_etcd" {
-  default = 3
-}
+#variable "number_of_etcd" {
+#  default = 3
+#}
 
 variable "number_of_controller" {
   default = 3
 }
 
 variable "number_of_worker" {
-  default = 2
+  default = 3
 }
 
 variable "kube_api_port" {
