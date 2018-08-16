@@ -13,21 +13,19 @@ resource "google_compute_subnetwork" "kubernetes" {
 resource "google_compute_address" "controllers" {
   count = "${var.number_of_controller}"
   name = "controller-${count.index}"
-#  name = "kubernetes-${var.region}"
   subnetwork = "${google_compute_subnetwork.kubernetes.self_link}"
   address_type = "INTERNAL"
   region = "${var.region}"
-  address = "10.240.0.2${count.index}"
+  address = "${var.network["prefix"]}.1${count.index}"
 }
 
 resource "google_compute_address" "workers" {
   count = "${var.number_of_worker}"
   name = "worker-${count.index}"
-#  name = "kubernetes-${var.region}"
   subnetwork = "${google_compute_subnetwork.kubernetes.self_link}"
   address_type = "INTERNAL"
   region = "${var.region}"
-  address = "10.240.0.3${count.index}"
+  address = "${var.network["prefix"]}.2${count.index}"
 }
 
 resource "google_compute_firewall" "kubernetes-allow-icmp" {

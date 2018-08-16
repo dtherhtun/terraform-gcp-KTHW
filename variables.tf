@@ -12,6 +12,7 @@ variable "network" {
   default = {
     "name"    = "kubernetes"
     "iprange" = "10.240.0.0/24"
+    "prefix"  = "10.240.0"
   }
 }
 
@@ -21,7 +22,7 @@ variable "machines" {
   default = {
     "instance-type" = "n1-standard-1"
     "img_project"   = "ubuntu-os-cloud"
-    "image"         = "ubuntu-1604-xenial-v20180808"
+    "image"         = "ubuntu-1604-xenial-v20180814"
     "disk-size"     = 200
   }
 }

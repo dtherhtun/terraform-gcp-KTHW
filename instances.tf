@@ -40,8 +40,7 @@ resource "google_compute_instance" "controller-cluster" {
 
   network_interface {
     subnetwork = "${google_compute_subnetwork.kubernetes.name}"
-    #subnetwork = "${element(google_compute_address.controllers.*.address, count.index)}"
-    #subnetwork = "${google_compute_address.controllers.network}"
+    address = "${element(google_compute_address.controllers.*.address, count.index)}"
     access_config {
 
     }
@@ -73,8 +72,7 @@ resource "google_compute_instance" "worker-cluster" {
 
   network_interface {
     subnetwork = "${google_compute_subnetwork.kubernetes.name}"
-    #subnetwork = "${element(google_compute_address.workers.*.address, count.index )}"
-    #subnetwork = "${google_compute_address.workers.name}"
+    address = "${element(google_compute_address.workers.*.address, count.index)}"
     access_config {
 
     }
