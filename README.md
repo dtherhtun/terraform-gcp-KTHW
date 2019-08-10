@@ -1,5 +1,6 @@
 # Kubernetes Cluster On GCP With Terraform 
 
+* Terraform v0.11.14
 * edit variables.tf
 * $terraform init
 * $terraform plan
