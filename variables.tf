@@ -1,9 +1,9 @@
 variable "project" {
-  default = "engaged-symbol-187009"
+  default = "k8sops"
 }
 
 variable "region" {
-  default = "us-west1"
+  default = "us-central1"
 }
 
 variable "network" {

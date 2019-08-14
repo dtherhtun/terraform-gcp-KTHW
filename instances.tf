@@ -49,6 +49,12 @@ resource "google_compute_instance" "controller-cluster" {
   service_account {
     scopes = ["compute-rw","storage-ro","service-management","service-control","logging-write","monitoring"]
   }
+  metadata_startup_script = <<SCRIPT
+sudo apt-get update && sudo apt-get install -y apt-transport-https curl
+sudo curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+sudo echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update && apt-get install -y kubelet kubeadm kubectl
+SCRIPT
 }
 
 resource "google_compute_instance" "worker-cluster" {
@@ -81,4 +87,12 @@ resource "google_compute_instance" "worker-cluster" {
   service_account {
     scopes = ["compute-rw","storage-ro","service-management","service-control","logging-write","monitoring"]
   }
+
+  metadata_startup_script = <<SCRIPT
+sudo apt-get update && sudo apt-get install -y apt-transport-https curl
+sudo curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+sudo echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update && apt-get install -y kubelet kubeadm kubectl
+SCRIPT
+
 }
