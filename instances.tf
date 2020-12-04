@@ -1,5 +1,5 @@
 data "google_compute_image" "cluster_image" {
-  name = "${var.machines["image"]}"
+  name    = "${var.machines["image"]}"
   project = "${var.machines["img_project"]}"
 }
 
@@ -33,21 +33,21 @@ resource "google_compute_instance" "controller-cluster" {
 
   boot_disk {
     initialize_params {
-    	image = "${data.google_compute_image.cluster_image.self_link}"
-    	size  = "${var.machines["disk-size"]}"
+      image = "${data.google_compute_image.cluster_image.self_link}"
+      size  = "${var.machines["disk-size"]}"
     }
   }
 
   network_interface {
     subnetwork = "${google_compute_subnetwork.kubernetes.name}"
-    address = "${element(google_compute_address.controllers.*.address, count.index)}"
+    address    = "${element(google_compute_address.controllers.*.address, count.index)}"
     access_config {
 
     }
   }
 
   service_account {
-    scopes = ["compute-rw","storage-ro","service-management","service-control","logging-write","monitoring"]
+    scopes = ["compute-rw", "storage-ro", "service-management", "service-control", "logging-write", "monitoring"]
   }
   metadata_startup_script = <<SCRIPT
 sudo apt-get update && sudo apt-get install -y apt-transport-https curl
@@ -61,7 +61,7 @@ resource "google_compute_instance" "worker-cluster" {
   count        = "${var.number_of_worker}"
   name         = "worker-${count.index}"
   machine_type = "${var.machines["instance-type"]}"
-  zone         = "${var.region}-${var.zones[2]}"   #"${var.region}-${element(var.zones, count.index)}"
+  zone         = "${var.region}-${var.zones[2]}" #"${var.region}-${element(var.zones, count.index)}"
 
   can_ip_forward = "true"
 
@@ -71,21 +71,21 @@ resource "google_compute_instance" "worker-cluster" {
 
   boot_disk {
     initialize_params {
-    	image = "${data.google_compute_image.cluster_image.self_link}"
-    	size  = "${var.machines["disk-size"]}"
+      image = "${data.google_compute_image.cluster_image.self_link}"
+      size  = "${var.machines["disk-size"]}"
     }
   }
 
   network_interface {
     subnetwork = "${google_compute_subnetwork.kubernetes.name}"
-    address = "${element(google_compute_address.workers.*.address, count.index)}"
+    address    = "${element(google_compute_address.workers.*.address, count.index)}"
     access_config {
 
     }
   }
-  
+
   service_account {
-    scopes = ["compute-rw","storage-ro","service-management","service-control","logging-write","monitoring"]
+    scopes = ["compute-rw", "storage-ro", "service-management", "service-control", "logging-write", "monitoring"]
   }
 
   metadata_startup_script = <<SCRIPT
